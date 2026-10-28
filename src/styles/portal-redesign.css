@@ -93,3 +93,23 @@ main{overflow:clip}
 .brand.brand-sac-viet{font-family:"Noto Serif",'Times New Roman',serif;font-size:34px;font-weight:800;letter-spacing:1px;line-height:1.2}.brand.brand-sac-viet>span{font-size:inherit;font-weight:inherit}.site-footer .brand.brand-sac-viet{font-size:28px}@media(max-width:600px){.brand.brand-sac-viet{font-size:25px;letter-spacing:1px}.site-footer .brand.brand-sac-viet{font-size:24px}}
 
 .games-slogan{text-align:center;max-width:850px;margin:0 auto 76px;padding:32px 0 52px;border-bottom:1px solid rgba(231,195,119,.25)}.games-slogan-quote{font-family:"Noto Serif",'Times New Roman',serif;font-size:clamp(30px,3.7vw,52px);font-weight:700;line-height:1.45;letter-spacing:-.6px;color:var(--cream,#f5edcf);margin:0 0 20px}.games-slogan-quote em{color:var(--gold,#e7c377);font-weight:700}.games-slogan-caption{font-size:18px;line-height:1.7;margin:0;color:var(--muted,#bbc9b8)}@media(max-width:600px){.games-slogan{margin-bottom:44px;padding:12px 0 32px}.games-slogan-caption{font-size:16px}.games-slogan-quote{letter-spacing:-.4px}}
+
+/* SURVEY SECTION (KHẢO SÁT) */
+.survey-section{position:relative;isolation:isolate}
+.survey-box{position:relative;display:grid;grid-template-columns:1.35fr 1fr;align-items:center;gap:48px;padding:52px 58px;background:radial-gradient(ellipse at 85% 15%,rgba(231,195,119,.16),transparent 65%),url('/assets/motifs/grain.svg'),var(--surface);border:1px solid rgba(231,195,119,.32);border-radius:var(--radius);overflow:hidden;box-shadow:0 20px 48px rgba(7,28,22,.45)}
+.survey-box:before{content:'';position:absolute;z-index:0;pointer-events:none;right:-90px;bottom:-110px;width:380px;height:380px;background:url('/assets/motifs/dong-son-gold.svg') center/contain no-repeat;opacity:.09}
+.survey-copy{position:relative;z-index:1}
+.survey-copy h2{font-size:clamp(30px,3.4vw,46px);line-height:1.22;margin-bottom:18px;letter-spacing:-.8px}
+.survey-copy h2 em{color:var(--gold);font-style:italic}
+.survey-desc{font-size:17px;line-height:1.8;color:var(--muted);max-width:52ch}
+.survey-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:30px}
+.survey-qr-side{position:relative;z-index:1;display:flex;justify-content:center}
+.survey-qr-card{background:linear-gradient(150deg,#fefcf8 0%,#f5eee1 100%);color:var(--deep);border:2px solid var(--gold);border-radius:22px;padding:24px 24px 20px;text-align:center;box-shadow:0 16px 40px rgba(0,0,0,.32),0 0 0 1px rgba(237,202,137,.25);width:100%;max-width:250px;display:flex;flex-direction:column;align-items:center;transition:transform .25s ease,box-shadow .25s ease;text-decoration:none}
+.survey-qr-card:hover{transform:translateY(-4px);box-shadow:0 22px 48px rgba(0,0,0,.42),0 0 0 2px var(--gold);color:var(--deep)}
+.survey-qr-frame{position:relative;background:#fff;padding:8px;border-radius:14px;border:1px solid rgba(16,47,41,.12);box-shadow:inset 0 1px 4px rgba(0,0,0,.06);line-height:0}
+.survey-qr-img{width:160px;height:160px;display:block}
+.survey-qr-title{font-size:13.5px;font-weight:700;color:#153d35;margin-top:13px;line-height:1.4}
+.survey-qr-hint{font-size:11.5px;color:#5c6e64;margin-top:4px}
+@media(max-width:960px){.survey-box{grid-template-columns:1fr;gap:36px;padding:42px 34px}.survey-qr-side{justify-content:flex-start}}
+@media(max-width:600px){.survey-box{padding:28px 20px;gap:26px}.survey-copy h2{font-size:28px}.survey-desc{font-size:15.5px}.survey-actions{flex-direction:column;align-items:stretch;gap:14px;margin-top:24px}.survey-actions .button{width:100%;justify-content:center}.survey-qr-side{justify-content:center}.survey-qr-card{max-width:100%}}
+

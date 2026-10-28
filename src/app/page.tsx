@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import "@/styles/homepage.css";
 import { GAMES_LIST } from "@/data/games";
+import { trackGamePlay, trackCultureView, trackEvent } from "@/lib/analytics";
 
 // Web Audio Synthesizer cho nhạc hội xuân Tây Bắc và SFX
 class FestivalAudioSystem {
@@ -300,6 +301,7 @@ export default function HomePage() {
     const targetId = gameId || GAMES_LIST[currentIndex].id;
     const game = GAMES_LIST.find((g) => g.id === targetId) || GAMES_LIST[currentIndex];
 
+    trackGamePlay(game.id, game.name, "lobby_carousel");
     audioSysRef.current?.playLaunchDrum();
     setSpinnerText(`ĐANG VÀO HỘI ${game.name}...`);
     setIsTransitioning(true);
@@ -308,6 +310,7 @@ export default function HomePage() {
       window.location.href = `/choi/${game.id}`;
     }, 220);
   };
+
 
   const handleCardClick = (idx: number) => {
     const n = GAMES_LIST.length;
@@ -480,9 +483,11 @@ export default function HomePage() {
           className="action-btn btn-culture"
           id="btn-kham-pha"
           title="Tìm hiểu nét đẹp văn hóa dân gian"
+          onClick={() => trackCultureView(currentGame.id, currentGame.name, "lobby_button")}
         >
           <img src="/assets/ui/btn_culture_sac_viet.png" alt="KHÁM PHÁ VĂN HÓA" className="layer-img btn-img" />
         </Link>
+
       </div>
 
       {/* MODAL: KHÁM PHÁ VĂN HÓA */}

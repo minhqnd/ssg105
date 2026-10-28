@@ -1,11 +1,12 @@
 "use client";
 
-import React, { use } from "react";
+import React, { use, useEffect } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import "@/styles/portal-redesign.css";
 import { GAMES_DATA, GALLERIES } from "@/data/games";
 import { usePortalAnimations } from "@/hooks/usePortalAnimations";
+import { trackCultureView, trackGamePlay } from "@/lib/analytics";
 
 export default function GameCultureDetailPage({
   params,
@@ -18,9 +19,16 @@ export default function GameCultureDetailPage({
 
   usePortalAnimations();
 
+  useEffect(() => {
+    if (g) {
+      trackCultureView(slug, g.title, "detail_page");
+    }
+  }, [slug, g]);
+
   if (!g) {
     notFound();
   }
+
 
   const gameKeys = Object.keys(GAMES_DATA);
   const currentIdx = gameKeys.indexOf(slug);
@@ -45,9 +53,15 @@ export default function GameCultureDetailPage({
         <Link className="text-link header-back" href="/van-hoa#tro-choi">
           ← Các trò chơi
         </Link>
-        <Link className="button small" href={`/choi/${slug}`} title="Vào trải nghiệm game ngay">
+        <Link
+          className="button small"
+          href={`/choi/${slug}`}
+          title="Vào trải nghiệm game ngay"
+          onClick={() => trackGamePlay(slug, g.title, "detail_header")}
+        >
           Chơi ngay <span aria-hidden="true">↗</span>
         </Link>
+
       </header>
 
       <main id="main">
@@ -72,9 +86,11 @@ export default function GameCultureDetailPage({
                 className="button"
                 href={`/choi/${slug}`}
                 style={{ backgroundColor: "#d97706", borderColor: "#d97706", color: "#fff", fontWeight: 700 }}
+                onClick={() => trackGamePlay(slug, g.title, "detail_hero")}
               >
                 Vào chơi {g.title} ngay ↗
               </Link>
+
               <a className="button" href="#cach-choi">
                 Cách chơi ngoài đời <span aria-hidden="true">↓</span>
               </a>

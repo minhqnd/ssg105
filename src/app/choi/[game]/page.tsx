@@ -1,9 +1,10 @@
 "use client";
 
-import React, { use, useState, useRef } from "react";
+import React, { use, useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GAMES_DATA } from "@/data/games";
+import { trackGamePlay } from "@/lib/analytics";
 
 export default function GamePlayPage({
   params,
@@ -16,9 +17,16 @@ export default function GamePlayPage({
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
+  useEffect(() => {
+    if (game) {
+      trackGamePlay(gameKey, game.title, "game_session_start");
+    }
+  }, [gameKey, game]);
+
   if (!game) {
     notFound();
   }
+
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {

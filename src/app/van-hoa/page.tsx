@@ -5,6 +5,7 @@ import Link from "next/link";
 import "@/styles/portal-redesign.css";
 import { GAMES_DATA, GAMES_LIST } from "@/data/games";
 import { usePortalAnimations } from "@/hooks/usePortalAnimations";
+import { trackCultureView, trackGamePlay } from "@/lib/analytics";
 
 export default function VanHoaPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -35,6 +36,7 @@ export default function VanHoaPage() {
           <a href="#ngay-hoi">Không gian ngày hội</a>
           <a href="#ve-du-an">Về Sắc Việt</a>
           <a href="#hoi-dap">Hỏi đáp</a>
+          <a href="#khao-sat">Khảo sát</a>
         </nav>
         <Link className="button small" href="/" title="Quay lại sảnh chính chơi game">
           Sảnh Trò Chơi <span aria-hidden="true">↗</span>
@@ -53,6 +55,7 @@ export default function VanHoaPage() {
             <a href="#ngay-hoi" onClick={() => setMobileMenuOpen(false)}>Không gian ngày hội</a>
             <a href="#ve-du-an" onClick={() => setMobileMenuOpen(false)}>Về Sắc Việt</a>
             <a href="#hoi-dap" onClick={() => setMobileMenuOpen(false)}>Hỏi đáp</a>
+            <a href="#khao-sat" onClick={() => setMobileMenuOpen(false)}>Khảo sát</a>
             <Link href="/" onClick={() => setMobileMenuOpen(false)}>Sảnh Trò Chơi ↗</Link>
           </nav>
         )}
@@ -162,13 +165,22 @@ export default function VanHoaPage() {
                     <h3>{info.title}</h3>
                     <p>{info.description}</p>
                     <div className="card-actions">
-                      <Link className="button small" href={`/tro-choi/${game.id}`}>
+                      <Link
+                        className="button small"
+                        href={`/tro-choi/${game.id}`}
+                        onClick={() => trackCultureView(game.id, info.title, "portal_game_card")}
+                      >
                         Khám phá văn hóa ↗
                       </Link>
-                      <Link className="text-link" href={`/choi/${game.id}`}>
+                      <Link
+                        className="text-link"
+                        href={`/choi/${game.id}`}
+                        onClick={() => trackGamePlay(game.id, info.title, "portal_game_card")}
+                      >
                         Vào chơi ngay ↗
                       </Link>
                     </div>
+
                   </div>
                 </article>
               );
@@ -281,6 +293,61 @@ export default function VanHoaPage() {
                 phương. Mỗi trang chi tiết có danh sách nguồn, chú thích ảnh và liên kết video tư liệu để bạn đối chiếu.
               </p>
             </details>
+          </div>
+        </section>
+
+        {/* SURVEY SECTION */}
+        <section className="survey-section wrap section-space" id="khao-sat">
+          <div className="survey-box">
+            <div className="survey-copy">
+              <h2>
+                Cùng Sắc Việt lan tỏa<br />
+                <em>nét đẹp văn hóa dân gian.</em>
+              </h2>
+              <p className="survey-desc">
+                Cảm nhận của bạn sau khi khám phá và trải nghiệm là điều vô cùng quý giá. Hãy dành ít phút chia sẻ ý kiến để giúp chúng mình hoàn thiện nội dung và phát triển dự án tốt hơn nhé!
+              </p>
+              <div className="survey-actions">
+                <a
+                  className="button"
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSezjYFb0NiPbqVXyNNrk9kipd-rtfI-_8DvscosXswPeiinhg/viewform"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Mở biểu mẫu khảo sát trong tab mới"
+                >
+                  Tham gia khảo sát ngay <span aria-hidden="true">↗</span>
+                </a>
+                {/* <a
+                  className="text-link"
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSezjYFb0NiPbqVXyNNrk9kipd-rtfI-_8DvscosXswPeiinhg/viewform"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Mở Google Forms
+                </a> */}
+              </div>
+            </div>
+
+            <div className="survey-qr-side">
+              <a
+                className="survey-qr-card"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSezjYFb0NiPbqVXyNNrk9kipd-rtfI-_8DvscosXswPeiinhg/viewform"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Bấm hoặc quét mã để mở bài khảo sát"
+              >
+                <div className="survey-qr-frame">
+                  <img
+                    src="/assets/survey-qr.svg"
+                    alt="Mã QR mở bài khảo sát trải nghiệm Sắc Việt"
+                    className="survey-qr-img"
+                    loading="lazy"
+                  />
+                </div>
+                <strong className="survey-qr-title">Quét bằng Camera hoặc Zalo</strong>
+                <span className="survey-qr-hint">Quét để mở bài khảo sát ↗</span>
+              </a>
+            </div>
           </div>
         </section>
 
