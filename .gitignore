@@ -1,12 +1,22 @@
+# Next.js & Node
+node_modules/
+.next/
+out/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# Environment
+.env
+.env*.local
+.vercel/
+
 # Development & analysis scripts
 *.py
 __pycache__/
 tools/
 scratch/
 scratch_*
-
-# Node
-node_modules/
 
 # Unity
 unity/
@@ -25,6 +35,9 @@ Thumbs.db
 *.tar.gz
 *.log
 *.tmp
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Analysis & debug test patterns
 aligned_*.png
