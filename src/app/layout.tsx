@@ -22,6 +22,14 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if (typeof window !== "undefined" && (window.location.pathname.endsWith("/index.html") || window.location.pathname === "/index.html")) {
+              var clean = window.location.pathname.replace(/index\\.html$/, "") || "/";
+              window.history.replaceState(null, "", clean + window.location.search + window.location.hash);
+            }`,
+          }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
