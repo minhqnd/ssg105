@@ -11,15 +11,6 @@
   <link rel="stylesheet" href="festival-theme.css">
   <script>
     window.ASSET_PREFIX = "../";
-    if (typeof window !== "undefined" && window.top === window.self) {
-      if (window.location.pathname.includes('/nem-con')) {
-        window.location.replace('/choi/nem-con/');
-      }
-    }
-    if (typeof window !== "undefined" && (window.location.pathname.endsWith('/index.html') || window.location.pathname === '/index.html')) {
-      var clean = window.location.pathname.replace(/\/index\.html$/, '') || '/';
-      window.history.replaceState(null, '', clean + window.location.search + window.location.hash);
-    }
     if (window.top !== window.self) {
       document.documentElement.classList.add('embedded-runner');
       document.addEventListener('click', function(e) {
@@ -40,7 +31,7 @@
     <header id="hud-top">
       <!-- 1. Left: Stylized Ném Còn Graphic Logo (Bấm vào logo để trở về Trang Chủ) -->
       <div class="hud-logo-wrap">
-        <a href="/" class="hud-logo-link" title="Trở về Trang Chủ - Ném Còn Dân Tộc" aria-label="Trở về Trang Chủ">
+        <a href="../index.html" class="hud-logo-link" title="Trở về Trang Chủ - Ném Còn Dân Tộc" aria-label="Trở về Trang Chủ">
           <img src="../assets/items/logo_nem_con.png" alt="Ném Còn Dân Tộc" class="hud-game-logo" id="hud-game-logo">
         </a>
       </div>
@@ -116,11 +107,11 @@
                 <span class="icon">🎯</span>
                 <span class="label">1 Người</span>
               </button>
-              <a class="menu-btn-item" href="/choi/nhay-sap/" aria-label="Mở game Nhảy Sạp">
+              <a class="menu-btn-item" href="../nhay-sap/index.html" aria-label="Mở game Nhảy Sạp">
                 <span class="icon">🎋</span>
                 <span class="label">Nhảy Sạp</span>
               </a>
-              <a class="menu-btn-item" href="/" aria-label="Trở về Trang Chủ">
+              <a class="menu-btn-item" href="../index.html" aria-label="Trở về Trang Chủ">
                 <span class="icon">🏠</span>
                 <span class="label">Trang Chủ</span>
               </a>

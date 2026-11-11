@@ -3,26 +3,8 @@
   const pending = [], seen = new WeakSet();
   let done = 0, failed = false, finished = false;
 
-  // 1. If opened directly in browser window (not iframe), redirect to clean runner /choi/[game]/
-  if (typeof window !== 'undefined' && window.location && window.location.pathname && window.top === window.self) {
-    const path = window.location.pathname;
-    const gameMatch = path.match(/\/(day-gay|nhay-sap|ca-kheo|ban-no|danh-quay)(\/|$|index\.html)/);
-    if (gameMatch) {
-      window.location.replace(`/choi/${gameMatch[1]}/`);
-      return;
-    }
-  }
-
-  // 2. Clean /index.html from address bar if present
-  if (typeof window !== 'undefined' && window.location && window.location.pathname && (window.location.pathname.endsWith('/index.html') || window.location.pathname === '/index.html')) {
-    const clean = window.location.pathname.replace(/\/index\.html$/, '/') || '/';
-    if (window.history && window.history.replaceState) {
-      window.history.replaceState(null, '', clean + (window.location.search || '') + (window.location.hash || ''));
-    }
-  }
-
-  // 3. Iframe link breakout & clean URL normalizer
-  if (typeof document !== 'undefined' && document.addEventListener) {
+  // Iframe link breakout & URL normalizer
+  if (typeof window !== 'undefined') {
     document.addEventListener('click', (e) => {
       const a = e.target && e.target.closest ? e.target.closest('a') : null;
       if (!a) return;
@@ -38,20 +20,10 @@
         return;
       }
 
-      // Transform ../index.html to /
-      if (href === '../index.html' || href === 'index.html' || href === '../' || href === '/') {
-        if (href.startsWith('../') || href.startsWith('/')) {
-          e.preventDefault();
-          if (window.top) window.top.location.href = '/';
-          else window.location.href = '/';
-          return;
-        }
-      }
-
-      // If running inside iframe, make any navigation break out to top window
+      // If running inside iframe, make any local navigation break out to top window
       if (window.top !== window.self) {
         if (!a.target || a.target === '_self') {
-          if (href.startsWith('../') || href.startsWith('/') || href.includes('chamsacviet.online')) {
+          if (href.startsWith('../') || href.startsWith('/') || href.startsWith('./index') || href.includes('chamsacviet.online')) {
             a.target = '_top';
           }
         }
@@ -74,7 +46,7 @@
     document.querySelector('main')?.setAttribute('inert', '');
   };
   if (document.body) mount();
-  else if (document.addEventListener) document.addEventListener('DOMContentLoaded', mount, { once: true });
+  else document.addEventListener('DOMContentLoaded', mount, { once: true });
 
   const bar = layer.querySelector('progress');
   const copy = layer.querySelector('p');
