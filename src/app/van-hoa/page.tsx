@@ -165,7 +165,7 @@ export default function VanHoaPage() {
                       <Link className="button small" href={`/tro-choi/${game.id}`}>
                         Khám phá văn hóa ↗
                       </Link>
-                      <Link className="text-link" href={`/choi/${game.id}`}>
+                      <Link className="text-link" href={`/${game.id}/`}>
                         Vào chơi ngay ↗
                       </Link>
                     </div>

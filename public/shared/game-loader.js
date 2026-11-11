@@ -4,7 +4,7 @@
   let done = 0, failed = false, finished = false;
 
   // Iframe link breakout & URL normalizer
-  if (typeof window !== 'undefined') {
+  if (typeof document !== 'undefined' && document.addEventListener) {
     document.addEventListener('click', (e) => {
       const a = e.target && e.target.closest ? e.target.closest('a') : null;
       if (!a) return;

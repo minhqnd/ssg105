@@ -363,7 +363,7 @@ export default function HomePage() {
     setIsTransitioning(true);
 
     setTimeout(() => {
-      window.location.href = `/choi/${game.id}`;
+      window.location.href = `/${game.id}/`;
     }, 220);
   };
 
