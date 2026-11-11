@@ -39,7 +39,7 @@ export default function GameCultureDetailClient({ slug }: { slug: string }) {
         <Link className="text-link header-back" href="/van-hoa#tro-choi">
           ← Các trò chơi
         </Link>
-        <Link className="button small" href={`/${slug}/`} title="Vào trải nghiệm game ngay">
+        <Link className="button small" href={`/choi/${slug}`} title="Vào trải nghiệm game ngay">
           Chơi ngay <span aria-hidden="true">↗</span>
         </Link>
       </header>
@@ -64,7 +64,7 @@ export default function GameCultureDetailClient({ slug }: { slug: string }) {
             <div className="actions" style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
               <Link
                 className="button"
-                href={`/${slug}/`}
+                href={`/choi/${slug}`}
                 style={{ backgroundColor: "#d97706", borderColor: "#d97706", color: "#fff", fontWeight: 700 }}
               >
                 Vào chơi {g.title} ngay ↗
@@ -119,7 +119,7 @@ export default function GameCultureDetailClient({ slug }: { slug: string }) {
               {g.video && <a href="#video">Video</a>}
               <a href="#nguon">Nguồn đọc</a>
             </div>
-            <Link className="button small" href={`/${slug}/`} style={{ backgroundColor: "#d97706", borderColor: "#d97706", color: "#fff" }}>
+            <Link className="button small" href={`/choi/${slug}`} style={{ backgroundColor: "#d97706", borderColor: "#d97706", color: "#fff" }}>
               Chơi ngay ↗
             </Link>
           </div>
@@ -302,7 +302,7 @@ export default function GameCultureDetailClient({ slug }: { slug: string }) {
             <p>{g.controls}</p>
             <Link
               className="button"
-              href={`/${slug}/`}
+              href={`/choi/${slug}`}
               style={{ width: "100%", justifyContent: "center", textDecoration: "none" }}
             >
               Vào trải nghiệm trò chơi ngay ↗

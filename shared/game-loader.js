@@ -3,6 +3,13 @@
   const pending = [], seen = new WeakSet();
   let done = 0, failed = false, finished = false;
 
+  // Iframe link breakout & embedded runner adjustments
+  if (typeof window !== 'undefined' && window.top !== window.self) {
+    if (typeof document !== 'undefined' && document.documentElement) {
+      document.documentElement.classList.add('embedded-runner');
+    }
+  }
+
   // Iframe link breakout & URL normalizer
   if (typeof document !== 'undefined' && document.addEventListener) {
     document.addEventListener('click', (e) => {
@@ -32,7 +39,7 @@
   }
 
   const style = document.createElement('style');
-  style.textContent = '#asset-loader{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#12382f;color:#f6edce;font-family:system-ui,-apple-system,sans-serif;padding:24px}#asset-loader section{width:min(360px,100%);text-align:center}#asset-loader h2{font-size:26px;margin:0 0 18px}#asset-loader p{font-size:16px;line-height:1.6;color:#cfdbc9}#asset-loader progress{width:100%;height:8px;accent-color:#ecc479}#asset-loader button{border:0;border-radius:10px;padding:14px 28px;background:#ecc479;color:#12382f;font:700 16px system-ui,-apple-system,sans-serif;cursor:pointer}';
+  style.textContent = '#asset-loader{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#12382f;color:#f6edce;font-family:system-ui,-apple-system,sans-serif;padding:24px}#asset-loader section{width:min(360px,100%);text-align:center}#asset-loader h2{font-size:26px;margin:0 0 18px}#asset-loader p{font-size:16px;line-height:1.6;color:#cfdbc9}#asset-loader progress{width:100%;height:8px;accent-color:#ecc479}#asset-loader button{border:0;border-radius:10px;padding:14px 28px;background:#ecc479;color:#12382f;font:700 16px system-ui,-apple-system,sans-serif;cursor:pointer}.embedded-runner header{display:none !important;}';
   document.head.append(style);
 
   const layer = document.createElement('div');
