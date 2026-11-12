@@ -97,30 +97,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 .dm-item:hover{background:#f3f4f6}
 .dm-item.sel{font-weight:600;color:var(--blue);background:#eff6ff}
 
-/* ── Editor Drawer ── */
-.ed-btn{position:fixed;bottom:18px;right:18px;background:#111;color:#fff;border:1px solid #374151;border-radius:30px;padding:8px 14px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:7px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25);z-index:999;transition:transform .15s,opacity .15s}
-.ed-btn:hover{background:#1f2937;transform:translateY(-2px)}
-.ed-btn.hidden{opacity:0;pointer-events:none}
-.ed-modal{position:fixed;top:0;right:0;bottom:0;width:370px;background:#fff;box-shadow:-6px 0 24px rgba(0,0,0,.15);z-index:1000;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.16,1,.3,1)}
-.ed-modal.open{transform:translateX(0)}
-.ed-hdr{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.ed-hdr h3{font-size:15px;font-weight:600}
-.ed-close{background:none;border:none;font-size:20px;color:#6b7280;cursor:pointer}
-.ed-body{padding:16px 18px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:14px}
-.fg{display:flex;flex-direction:column;gap:4px}
-.fg label{font-size:12px;font-weight:600;color:#374151}
-.fg input,.fg select{border:1px solid #d1d5db;border-radius:5px;padding:7px 10px;font-size:13px;color:#111;outline:none}
-.fg input:focus,.fg select:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(0,81,195,.15)}
-.preset{text-align:left;padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;cursor:pointer;transition:background .15s}
-.preset:hover{background:#eff6ff;border-color:#bfdbfe}
-.preset strong{display:block;color:#1e3a8a}
-.preset em{color:#64748b;font-size:11px;font-style:normal}
-.ed-foot{padding:12px 18px;border-top:1px solid var(--border)}
-.ed-foot button{width:100%;background:var(--blue);color:#fff;border:none;padding:8px;border-radius:5px;font-size:13px;font-weight:500;cursor:pointer}
-.ed-foot button:hover{background:var(--blue-hover)}
-
-@media print{.ed-btn,.ed-modal{display:none!important}}
-
 </style>
 </head>
 <body>
@@ -131,10 +107,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
     <span class="zone-name" id="zone-name">chamsacviet.online</span>
     <span class="plan-badge">free</span>
-  </div>
-  <div class="hdr-right">
-    <a class="hdr-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Support</a>
-    <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
   </div>
 </div>
 
@@ -297,34 +269,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 </div>
 <div class="tab-page" id="page-dns">
   <div class="dash"><div class="placeholder-page"><h3>DNS</h3><p>DNS Queries: 18.2k · Average Latency: 14ms</p></div></div>
-</div>
-
-<!-- Editor Toggle -->
-<button class="ed-btn" id="ed-btn" onclick="toggleEd()">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-  <span>Tùy chỉnh số liệu</span>
-</button>
-
-<!-- Editor Drawer -->
-<div class="ed-modal" id="ed-modal">
-  <div class="ed-hdr"><h3>Fake Data Studio</h3><button class="ed-close" onclick="toggleEd()">×</button></div>
-  <div class="ed-body">
-    <div class="fg"><label>Kịch bản:</label>
-      <button class="preset" onclick="applyPreset('full')"><strong>1. Toàn bộ (24/10 → Nay): ~6.6k PV</strong><em>Đỉnh chính 28/10, đỉnh phụ vừa phải 1/11 & 11/11</em></button>
-      <button class="preset" onclick="applyPreset('photo')"><strong>2. Giống ảnh mẫu (24h qua)</strong><em>PV: 1.46k · Visits: 813 · Y hệt ảnh chụp Cloudflare</em></button>
-    </div>
-    <div class="fg"><label>Tên miền:</label><input id="cfg-dom" value="chamsacviet.online" oninput="document.getElementById('zone-name').textContent=this.value"></div>
-    <div class="fg"><label>Pageviews (text):</label><input id="cfg-pv" value="6.6k" oninput="overrideText()"></div>
-    <div class="fg"><label>Visits (text):</label><input id="cfg-vis" value="3.6k" oninput="overrideText()"></div>
-    <div class="fg"><label>Tăng trưởng (%):</label><input id="cfg-trend" value="100.0%" oninput="overrideText()"></div>
-    <div class="fg" style="border-top:1px solid #e5e7eb;padding-top:10px">
-      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:400">
-        <input type="checkbox" id="cfg-stealth" onchange="toggleStealth(this.checked)">
-        Ẩn nút để chụp ảnh (nhấn phím <kbd style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:3px;padding:0 4px;font-size:11px">H</kbd> mở lại)
-      </label>
-    </div>
-  </div>
-  <div class="ed-foot"><button onclick="toggleEd()">Đóng</button></div>
 </div>
 
 <script>
@@ -633,12 +577,7 @@ function render() {
   document.getElementById('ct-pv').textContent = ds.pvText;
   document.getElementById('ct-vis').textContent = ds.visText;
 
-  // 2. Editor fields
-  document.getElementById('cfg-pv').value = ds.pvText;
-  document.getElementById('cfg-vis').value = ds.visText;
-  document.getElementById('cfg-trend').value = ds.trendPv;
-
-  // 3. Top Line Charts & Sparklines
+  // 2. Top Line Charts & Sparklines
   drawChart('pv');
   drawChart('vis');
   drawSpark('pv');
@@ -830,42 +769,6 @@ function pickRange(r, el) {
   document.getElementById('date-menu').classList.remove('show');
   render();
 }
-
-// ═══════════════════════════════════════
-// PRESETS & EDITOR
-// ═══════════════════════════════════════
-function applyPreset(p) {
-  ds = p === 'photo' ? D24 : DFULL;
-  document.querySelectorAll('.dm-item').forEach(i => i.classList.remove('sel'));
-  const targetIdx = p === 'photo' ? 0 : 1;
-  const items = document.querySelectorAll('.dm-item');
-  if (items[targetIdx]) items[targetIdx].classList.add('sel');
-  render();
-}
-function toggleEd() {
-  document.getElementById('ed-modal').classList.toggle('open');
-}
-function overrideText() {
-  ds.pvText = document.getElementById('cfg-pv').value;
-  ds.visText = document.getElementById('cfg-vis').value;
-  ds.trendPv = document.getElementById('cfg-trend').value;
-  ds.trendVis = document.getElementById('cfg-trend').value;
-  render();
-}
-function toggleStealth(on) {
-  document.getElementById('ed-btn').classList.toggle('hidden', on);
-  if (on) document.getElementById('ed-modal').classList.remove('open');
-}
-window.addEventListener('keydown', e => {
-  if ((e.key === 'h' || e.key === 'H') && !['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)) {
-    const btn = document.getElementById('ed-btn');
-    if (btn.classList.contains('hidden')) {
-      btn.classList.remove('hidden');
-    } else {
-      toggleEd();
-    }
-  }
-});
 
 // Initial render
 render();
