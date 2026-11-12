@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Analytics | chamsacviet.online</title>
+<style>
+
+:root {
+  --bg: #f5f6f8; --card: #fff; --border: #e5e7eb;
+  --text: #1d252c; --muted: #687787; --light: #9ca3af;
+  --blue: #0051c3; --blue-hover: #003d94; --green: #097e39; --orange: #f6821f;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+
+/* ── Top Header ── */
+.top-bar{background:#fff;border-bottom:1px solid var(--border);padding:10px 28px;display:flex;align-items:center;justify-content:space-between}
+.zone-info{display:flex;align-items:center;gap:10px}
+.zone-name{font-size:15px;font-weight:600}
+.plan-badge{font-size:11px;color:#4b5563;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:9999px;padding:1px 8px;font-weight:500}
+.hdr-right{display:flex;align-items:center;gap:14px}
+.hdr-link{font-size:13px;color:#4b5563;text-decoration:none;display:flex;align-items:center;gap:5px;cursor:pointer}
+.hdr-link:hover{color:var(--text)}
+.avatar{width:26px;height:26px;border-radius:50%;border:1.5px solid #d1d5db;display:flex;align-items:center;justify-content:center;cursor:pointer}
+
+/* ── Tab Bar ── */
+.tab-bar{background:#fff;border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between}
+.tabs{display:flex;gap:0}
+.tab{padding:12px 16px;font-size:13.5px;color:var(--muted);cursor:pointer;font-weight:500;position:relative;user-select:none;border-bottom:2px solid transparent;transition:color .15s}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--text);font-weight:600;border-bottom-color:#111}
+.tab-right{display:flex;align-items:center;gap:8px}
+.btn-sm{display:flex;align-items:center;gap:5px;background:#fff;border:1px solid #d1d5db;border-radius:5px;padding:5px 10px;font-size:12px;font-weight:500;color:#374151;cursor:pointer}
+.btn-sm:hover{background:#f9fafb;border-color:#9ca3af}
+
+/* ── Dashboard Body ── */
+.dash{padding:24px 28px;max-width:1260px;margin:0 auto}
+
+/* ── Metric Cards ── */
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.m-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px 20px;display:flex;justify-content:space-between;align-items:flex-start;cursor:pointer;transition:box-shadow .15s}
+.m-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.m-card.selected{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue)}
+.m-label{font-size:13px;color:var(--muted);margin-bottom:6px}
+.m-val{font-size:26px;font-weight:600;letter-spacing:-.5px}
+.m-trend{font-size:12px;font-weight:500;color:var(--green);display:inline-flex;align-items:center;gap:3px;margin-left:8px}
+.m-spark{width:130px;height:42px;align-self:flex-end}
+
+/* ── Chart Cards ── */
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
+.c-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px 20px}
+.c-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.c-legend{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500}
+.c-dot{width:8px;height:8px;border-radius:50%;background:var(--blue)}
+.c-total{color:#6b7280;font-weight:400}
+.grp-by{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)}
+.grp-by select{background:#fff;border:1px solid #d1d5db;border-radius:4px;padding:3px 6px;font-size:11.5px;cursor:pointer;outline:none}
+
+.chart-wrap{position:relative;width:100%;height:220px}
+.chart-wrap svg{width:100%;height:100%;overflow:visible}
+.chart-tip{position:absolute;background:rgba(17,24,39,.92);color:#fff;padding:6px 10px;border-radius:5px;font-size:11px;pointer-events:none;opacity:0;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,.15);z-index:10;transform:translate(-50%,-120%);transition:opacity .08s}
+
+/* ── Section Title & Cards ── */
+.sec-title{font-size:16px;font-weight:600;margin:24px 0 14px 0}
+.sec-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+.sec-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px 20px}
+.sec-sub{font-size:13px;font-weight:500;color:var(--muted);margin-bottom:12px}
+
+/* ── Horizontal Bar Lists ── */
+.bl{display:flex;flex-direction:column;gap:11px}
+.bl-row{display:grid;grid-template-columns:1fr 130px 55px;align-items:center;gap:10px;font-size:12.5px;padding:2px 0}
+.bl-name{color:#1f2937;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:inherit}
+.bl-track{height:5px;background:#edf0f4;border-radius:9999px;overflow:hidden}
+.bl-fill{height:100%;background:var(--blue);border-radius:9999px;transition:width .3s}
+.bl-cnt{text-align:right;color:#374151;font-weight:500;font-variant-numeric:tabular-nums;font-size:12px}
+
+/* ── Stacked Bar Chart for Devices ── */
+.dev-legend{display:flex;gap:18px;margin-bottom:12px;font-size:12.5px;font-weight:500}
+.dev-legend span{display:flex;align-items:center;gap:6px}
+.dev-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dev-chart-wrap{position:relative;width:100%;height:220px}
+.dev-chart-wrap svg{width:100%;height:100%;overflow:visible}
+
+/* ── Tab Content Pages ── */
+.tab-page{display:none}
+.tab-page.active{display:block}
+.placeholder-page{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:60px 40px;text-align:center;color:var(--muted);font-size:14px}
+.placeholder-page h3{font-size:18px;color:var(--text);margin-bottom:8px}
+
+/* ── Date Range Dropdown ── */
+.date-wrap{position:relative}
+.date-menu{position:absolute;top:100%;right:0;margin-top:4px;background:#fff;border:1px solid #d1d5db;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.1);width:260px;z-index:100;display:none}
+.date-menu.show{display:block}
+.dm-item{padding:8px 12px;font-size:12.5px;color:#374151;cursor:pointer;display:flex;justify-content:space-between}
+.dm-item:hover{background:#f3f4f6}
+.dm-item.sel{font-weight:600;color:var(--blue);background:#eff6ff}
+
+/* ── Editor Drawer ── */
+.ed-btn{position:fixed;bottom:18px;right:18px;background:#111;color:#fff;border:1px solid #374151;border-radius:30px;padding:8px 14px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:7px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25);z-index:999;transition:transform .15s,opacity .15s}
+.ed-btn:hover{background:#1f2937;transform:translateY(-2px)}
+.ed-btn.hidden{opacity:0;pointer-events:none}
+.ed-modal{position:fixed;top:0;right:0;bottom:0;width:370px;background:#fff;box-shadow:-6px 0 24px rgba(0,0,0,.15);z-index:1000;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.16,1,.3,1)}
+.ed-modal.open{transform:translateX(0)}
+.ed-hdr{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.ed-hdr h3{font-size:15px;font-weight:600}
+.ed-close{background:none;border:none;font-size:20px;color:#6b7280;cursor:pointer}
+.ed-body{padding:16px 18px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:14px}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:12px;font-weight:600;color:#374151}
+.fg input,.fg select{border:1px solid #d1d5db;border-radius:5px;padding:7px 10px;font-size:13px;color:#111;outline:none}
+.fg input:focus,.fg select:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(0,81,195,.15)}
+.preset{text-align:left;padding:8px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;cursor:pointer;transition:background .15s}
+.preset:hover{background:#eff6ff;border-color:#bfdbfe}
+.preset strong{display:block;color:#1e3a8a}
+.preset em{color:#64748b;font-size:11px;font-style:normal}
+.ed-foot{padding:12px 18px;border-top:1px solid var(--border)}
+.ed-foot button{width:100%;background:var(--blue);color:#fff;border:none;padding:8px;border-radius:5px;font-size:13px;font-weight:500;cursor:pointer}
+.ed-foot button:hover{background:var(--blue-hover)}
+
+@media print{.ed-btn,.ed-modal{display:none!important}}
+
+</style>
+</head>
+<body>
+
+<!-- Top Bar (no sidebar) -->
+<div class="top-bar">
+  <div class="zone-info">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <span class="zone-name" id="zone-name">chamsacviet.online</span>
+    <span class="plan-badge">free</span>
+  </div>
+  <div class="hdr-right">
+    <a class="hdr-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Support</a>
+    <div class="avatar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+  </div>
+</div>
+
+<!-- Tab Bar -->
+<div class="tab-bar">
+  <div class="tabs" id="main-tabs">
+    <div class="tab" data-tab="requests">Requests</div>
+    <div class="tab active" data-tab="visitors">Visitors</div>
+    <div class="tab" data-tab="performance">Performance</div>
+    <div class="tab" data-tab="security">Security</div>
+    <div class="tab" data-tab="cache">Cache</div>
+    <div class="tab" data-tab="origin">Origin</div>
+    <div class="tab" data-tab="dns">DNS</div>
+  </div>
+  <div class="tab-right">
+    <button class="btn-sm"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg> Add filter</button>
+    <div class="date-wrap">
+      <button class="btn-sm" id="date-btn" onclick="toggleDateMenu()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span id="date-label">Oct 24 – Nov 12</span>
+      </button>
+      <div class="date-menu" id="date-menu">
+        <div class="dm-item" onclick="pickRange('24h',this)"><span>Last 24 hours</span><span style="color:#9ca3af">Nov 11–12</span></div>
+        <div class="dm-item sel" onclick="pickRange('full',this)"><span>Oct 24 – Nov 12</span><span style="color:#9ca3af">Oct 24–Nov 12</span></div>
+        <div class="dm-item" onclick="pickRange('7d',this)"><span>Previous 7 days</span><span style="color:#9ca3af">Nov 5–12</span></div>
+      </div>
+    </div>
+    <button class="btn-sm" style="padding:5px 8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+  </div>
+</div>
+
+
+<!-- ══════ VISITORS TAB (main content) ══════ -->
+<div class="tab-page active" id="page-visitors">
+<div class="dash">
+
+  <!-- Metric Cards (clickable) -->
+  <div class="metrics">
+    <div class="m-card selected" id="card-pv" onclick="selectMetric('pv')">
+      <div>
+        <div class="m-label">Pageviews</div>
+        <span class="m-val" id="val-pv">6.6k</span>
+        <span class="m-trend" id="trend-pv"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg> <span>100.0%</span></span>
+      </div>
+      <svg class="m-spark" id="spark-pv" viewBox="0 0 130 42"><defs><linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0051c3" stop-opacity=".22"/><stop offset="100%" stop-color="#0051c3" stop-opacity="0"/></linearGradient></defs><path id="spa-pv" fill="url(#sg1)"/><path id="spl-pv" fill="none" stroke="#0051c3" stroke-width="1.6"/></svg>
+    </div>
+    <div class="m-card" id="card-vis" onclick="selectMetric('vis')">
+      <div>
+        <div class="m-label">Total visits</div>
+        <span class="m-val" id="val-vis">3.6k</span>
+        <span class="m-trend" id="trend-vis"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg> <span>100.0%</span></span>
+      </div>
+      <svg class="m-spark" id="spark-vis" viewBox="0 0 130 42"><defs><linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0051c3" stop-opacity=".22"/><stop offset="100%" stop-color="#0051c3" stop-opacity="0"/></linearGradient></defs><path id="spa-vis" fill="url(#sg2)"/><path id="spl-vis" fill="none" stroke="#0051c3" stroke-width="1.6"/></svg>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="charts">
+    <div class="c-card">
+      <div class="c-hdr">
+        <div class="c-legend"><span class="c-dot"></span>Pageviews over time <span class="c-total" id="ct-pv">6.6k</span></div>
+        <div class="grp-by">Group by <select><option>None</option><option>15 min</option><option>1 hour</option><option>1 day</option></select></div>
+      </div>
+      <div class="chart-wrap" id="cw-pv">
+        <svg viewBox="0 0 600 220" preserveAspectRatio="none">
+          <defs><linearGradient id="fg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0051c3" stop-opacity=".16"/><stop offset="100%" stop-color="#0051c3" stop-opacity=".01"/></linearGradient></defs>
+          <g id="grid-pv"></g>
+          <path id="area-pv" fill="url(#fg1)"/>
+          <path id="line-pv" fill="none" stroke="#0051c3" stroke-width="2" stroke-linejoin="round"/>
+          <line id="xh-pv" x1="0" y1="25" x2="0" y2="180" stroke="#9ca3af" stroke-width="1" stroke-dasharray="3 3" opacity="0"/>
+          <circle id="dot-pv" cx="-10" cy="-10" r="4" fill="#0051c3" stroke="#fff" stroke-width="2" opacity="0"/>
+        </svg>
+        <div class="chart-tip" id="tip-pv"></div>
+      </div>
+    </div>
+    <div class="c-card">
+      <div class="c-hdr">
+        <div class="c-legend"><span class="c-dot"></span>Visits over time <span class="c-total" id="ct-vis">3.6k</span></div>
+        <div class="grp-by">Group by <select><option>None</option><option>15 min</option><option>1 hour</option><option>1 day</option></select></div>
+      </div>
+      <div class="chart-wrap" id="cw-vis">
+        <svg viewBox="0 0 600 220" preserveAspectRatio="none">
+          <defs><linearGradient id="fg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0051c3" stop-opacity=".16"/><stop offset="100%" stop-color="#0051c3" stop-opacity=".01"/></linearGradient></defs>
+          <g id="grid-vis"></g>
+          <path id="area-vis" fill="url(#fg2)"/>
+          <path id="line-vis" fill="none" stroke="#0051c3" stroke-width="2" stroke-linejoin="round"/>
+          <line id="xh-vis" x1="0" y1="25" x2="0" y2="180" stroke="#9ca3af" stroke-width="1" stroke-dasharray="3 3" opacity="0"/>
+          <circle id="dot-vis" cx="-10" cy="-10" r="4" fill="#0051c3" stroke="#fff" stroke-width="2" opacity="0"/>
+        </svg>
+        <div class="chart-tip" id="tip-vis"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <h2 class="sec-title">Content</h2>
+  <div class="sec-row">
+    <div class="sec-card">
+      <div class="sec-sub">Top paths</div>
+      <div class="bl" id="bl-paths"></div>
+    </div>
+    <div class="sec-card">
+      <div class="sec-sub">Top hosts</div>
+      <div class="bl" id="bl-hosts"></div>
+    </div>
+  </div>
+
+  <!-- Technology Section -->
+  <h2 class="sec-title">Technology</h2>
+  <div class="sec-row">
+    <div class="sec-card">
+      <div class="sec-sub">Device types over time</div>
+      <div class="dev-legend">
+        <span><span class="dev-dot" style="background:#0051c3"></span> Desktop <span id="dev-desk-n" style="color:#6b7280;margin-left:4px">1.28k</span></span>
+        <span><span class="dev-dot" style="background:#f6821f"></span> Mobile <span id="dev-mob-n" style="color:#6b7280;margin-left:4px">180</span></span>
+      </div>
+      <div class="dev-chart-wrap" id="cw-dev">
+        <svg id="dev-chart" viewBox="0 0 600 220" preserveAspectRatio="none">
+          <g id="dev-grid"></g>
+          <g id="dev-bars"></g>
+        </svg>
+        <div class="chart-tip" id="tip-dev"></div>
+      </div>
+    </div>
+    <div class="sec-card">
+      <div class="sec-sub">Top operating systems</div>
+      <div class="bl" id="bl-os"></div>
+    </div>
+  </div>
+
+  <div class="sec-row">
+    <div class="sec-card">
+      <div class="sec-sub">Top browsers</div>
+      <div class="bl" id="bl-browsers"></div>
+    </div>
+    <div class="sec-card">
+      <div class="sec-sub">Top user agents</div>
+      <div class="bl" id="bl-ua"></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════ OTHER TAB PAGES (functional tabs) ══════ -->
+<div class="tab-page" id="page-requests">
+  <div class="dash"><div class="placeholder-page"><h3>Requests</h3><p>Total requests: 12.4k · Cached: 8.6k · Uncached: 3.8k · Bandwidth: 142.8 MB</p><p style="margin-top:12px;font-size:12px;color:#9ca3af">Chuyển sang tab <strong>Visitors</strong> để xem chi tiết lưu lượng truy cập.</p></div></div>
+</div>
+<div class="tab-page" id="page-performance">
+  <div class="dash"><div class="placeholder-page"><h3>Performance</h3><p>Page Load Time: 0.82s · TTFB: 85ms · LCP: 1.1s · FID: 12ms</p></div></div>
+</div>
+<div class="tab-page" id="page-security">
+  <div class="dash"><div class="placeholder-page"><h3>Security</h3><p>Threats Mitigated: 0 · WAF Managed Rules: Active · SSL/TLS: Full (Strict)</p></div></div>
+</div>
+<div class="tab-page" id="page-cache">
+  <div class="dash"><div class="placeholder-page"><h3>Cache</h3><p>Cache Hit Ratio: 69.4% · Static Assets Cached: 100%</p></div></div>
+</div>
+<div class="tab-page" id="page-origin">
+  <div class="dash"><div class="placeholder-page"><h3>Origin</h3><p>Origin Response Time: 94ms · Error Rate: 0.00%</p></div></div>
+</div>
+<div class="tab-page" id="page-dns">
+  <div class="dash"><div class="placeholder-page"><h3>DNS</h3><p>DNS Queries: 18.2k · Average Latency: 14ms</p></div></div>
+</div>
+
+<!-- Editor Toggle -->
+<button class="ed-btn" id="ed-btn" onclick="toggleEd()">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+  <span>Tùy chỉnh số liệu</span>
+</button>
+
+<!-- Editor Drawer -->
+<div class="ed-modal" id="ed-modal">
+  <div class="ed-hdr"><h3>Fake Data Studio</h3><button class="ed-close" onclick="toggleEd()">×</button></div>
+  <div class="ed-body">
+    <div class="fg"><label>Kịch bản:</label>
+      <button class="preset" onclick="applyPreset('full')"><strong>1. Toàn bộ (24/10 → Nay): ~6.6k PV</strong><em>Đỉnh chính 28/10, đỉnh phụ vừa phải 1/11 & 11/11</em></button>
+      <button class="preset" onclick="applyPreset('photo')"><strong>2. Giống ảnh mẫu (24h qua)</strong><em>PV: 1.46k · Visits: 813 · Y hệt ảnh chụp Cloudflare</em></button>
+    </div>
+    <div class="fg"><label>Tên miền:</label><input id="cfg-dom" value="chamsacviet.online" oninput="document.getElementById('zone-name').textContent=this.value"></div>
+    <div class="fg"><label>Pageviews (text):</label><input id="cfg-pv" value="6.6k" oninput="overrideText()"></div>
+    <div class="fg"><label>Visits (text):</label><input id="cfg-vis" value="3.6k" oninput="overrideText()"></div>
+    <div class="fg"><label>Tăng trưởng (%):</label><input id="cfg-trend" value="100.0%" oninput="overrideText()"></div>
+    <div class="fg" style="border-top:1px solid #e5e7eb;padding-top:10px">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:400">
+        <input type="checkbox" id="cfg-stealth" onchange="toggleStealth(this.checked)">
+        Ẩn nút để chụp ảnh (nhấn phím <kbd style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:3px;padding:0 4px;font-size:11px">H</kbd> mở lại)
+      </label>
+    </div>
+  </div>
+  <div class="ed-foot"><button onclick="toggleEd()">Đóng</button></div>
+</div>
+
+<script>
+
+// ═══════════════════════════════════════
+// DATA SETS
+// ═══════════════════════════════════════
+
+// --- 24h view (matches the screenshot 100%) ---
+const D24 = {
+  range: "Last 24 hours",
+  pvText: "1.46k", visText: "813",
+  trendPv: "100.0%", trendVis: "100.0%",
+  yMax: 250,
+  ySteps: [250, 200, 150, 100, 50, 0],
+  xLabels: ["Nov 11, 16:00","Nov 11, 20:00","Nov 12, 00:00","Nov 12, 04:00","Nov 12, 08:00","Nov 12, 12:00"],
+  series: [
+    {t:"Nov 11, 14:00", pv:4, vis:2},
+    {t:"Nov 11, 15:00", pv:7, vis:4},
+    {t:"Nov 11, 16:00", pv:5, vis:3},
+    {t:"Nov 11, 17:00", pv:15, vis:9},
+    {t:"Nov 11, 18:00", pv:245, vis:210},
+    {t:"Nov 11, 19:00", pv:165, vis:95},
+    {t:"Nov 11, 20:00", pv:22, vis:14},
+    {t:"Nov 11, 21:00", pv:38, vis:24},
+    {t:"Nov 11, 22:00", pv:15, vis:9},
+    {t:"Nov 11, 23:00", pv:50, vis:32},
+    {t:"Nov 12, 00:00", pv:20, vis:12},
+    {t:"Nov 12, 01:00", pv:48, vis:28},
+    {t:"Nov 12, 02:00", pv:42, vis:22},
+    {t:"Nov 12, 03:00", pv:6, vis:4},
+    {t:"Nov 12, 04:00", pv:4, vis:3},
+    {t:"Nov 12, 05:00", pv:12, vis:7},
+    {t:"Nov 12, 06:00", pv:8, vis:5},
+    {t:"Nov 12, 07:00", pv:20, vis:12},
+    {t:"Nov 12, 08:00", pv:14, vis:8},
+    {t:"Nov 12, 09:00", pv:42, vis:24},
+    {t:"Nov 12, 10:00", pv:22, vis:13},
+    {t:"Nov 12, 11:00", pv:32, vis:18},
+    {t:"Nov 12, 12:00", pv:10, vis:6}
+  ],
+  paths: [
+    {name:"/", cnt:485, max:485},
+    {name:"/tro-choi/nem-con/", cnt:96, max:485},
+    {name:"/favicon.ico", cnt:94, max:485},
+    {name:"/tro-choi/nem-con", cnt:57, max:485},
+    {name:"/nem-con/index.html", cnt:33, max:485},
+    {name:"/choi/nem-con/", cnt:25, max:485},
+    {name:"/day-gay/index.html", cnt:25, max:485},
+    {name:"/index.html", cnt:23, max:485},
+    {name:"/tro-choi/day-gay/", cnt:22, max:485}
+  ],
+  hosts: [
+    {name:"chamsacviet.online", cnt:"1.27k", n:1270, max:1270},
+    {name:"www.chamsacviet.online", cnt:132, n:132, max:1270},
+    {name:"chamsacviet.online:443", cnt:34, n:34, max:1270},
+    {name:"chamsacviet.online:8443", cnt:23, n:23, max:1270},
+    {name:"www.chamsacviet.online:443", cnt:1, n:1, max:1270}
+  ],
+  deviceSummary: { desktop: "1.28k", mobile: "180" },
+  devMax: 500,
+  devSteps: [500, 400, 300, 200, 100, 0],
+  devXLabels: ["Nov 11, 12:00","Nov 11, 16:00","Nov 11, 20:00","Nov 12, 00:00","Nov 12, 04:00","Nov 12, 08:00","Nov 12, 12:00"],
+  devSeries: [
+    {t:"Nov 11, 12:00", desk:3, mob:0},
+    {t:"Nov 11, 14:00", desk:5, mob:1},
+    {t:"Nov 11, 16:00", desk:4, mob:1},
+    {t:"Nov 11, 17:00", desk:12, mob:3},
+    {t:"Nov 11, 18:00", desk:425, mob:18},
+    {t:"Nov 11, 19:00", desk:78, mob:12},
+    {t:"Nov 11, 20:00", desk:65, mob:12},
+    {t:"Nov 11, 21:00", desk:60, mob:15},
+    {t:"Nov 11, 22:00", desk:90, mob:15},
+    {t:"Nov 11, 23:00", desk:95, mob:15},
+    {t:"Nov 12, 00:00", desk:125, mob:12},
+    {t:"Nov 12, 01:00", desk:10, mob:2},
+    {t:"Nov 12, 02:00", desk:12, mob:15},
+    {t:"Nov 12, 03:00", desk:15, mob:18},
+    {t:"Nov 12, 04:00", desk:8, mob:2},
+    {t:"Nov 12, 05:00", desk:6, mob:4},
+    {t:"Nov 12, 06:00", desk:10, mob:5},
+    {t:"Nov 12, 07:00", desk:60, mob:18},
+    {t:"Nov 12, 08:00", desk:58, mob:18},
+    {t:"Nov 12, 09:00", desk:68, mob:8},
+    {t:"Nov 12, 10:00", desk:65, mob:6},
+    {t:"Nov 12, 11:00", desk:55, mob:5}
+  ],
+  os: [
+    {name:"Windows", cnt:559, max:559},
+    {name:"Unknown/Others", cnt:366, max:559},
+    {name:"MacOSX", cnt:303, max:559},
+    {name:"iOS", cnt:96, max:559},
+    {name:"Linux", cnt:78, max:559},
+    {name:"Android", cnt:55, max:559},
+    {name:"ChromeOS", cnt:2, max:559}
+  ],
+  browsers: [
+    {name:"Chrome", cnt:562, max:562},
+    {name:"Unknown/Others", cnt:322, max:562}
+  ],
+  ua: [
+    {name:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36", cnt:168, max:168},
+    {name:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36", cnt:165, max:168}
+  ]
+};
+
+// --- Full timeline Oct 24 → Nov 12 (Natural organic waves, reduced Nov 1 peak, realistic decay) ---
+const DFULL = {
+  range: "Oct 24 – Nov 12",
+  pvText: "6.6k", visText: "3.6k",
+  trendPv: "↗ 100.0%", trendVis: "↗ 100.0%",
+  yMax: 1600,
+  ySteps: [1600, 1200, 800, 400, 0],
+  xLabels: ["Oct 24","Oct 27","Oct 30","Nov 2","Nov 5","Nov 8","Nov 11","Nov 12"],
+  series: [
+    {t:"Oct 24, 08:00", pv:2, vis:1},
+    {t:"Oct 24, 20:00", pv:4, vis:2},
+    {t:"Oct 25, 08:00", pv:3, vis:2},
+    {t:"Oct 25, 20:00", pv:5, vis:3},
+    {t:"Oct 26, 08:00", pv:5, vis:3},
+    {t:"Oct 26, 20:00", pv:9, vis:5},
+    {t:"Oct 27, 08:00", pv:8, vis:4},
+    {t:"Oct 27, 20:00", pv:14, vis:8},
+    // Oct 28 (Deploy) - Main launch peak
+    {t:"Oct 28, 08:00", pv:420, vis:230},
+    {t:"Oct 28, 14:00", pv:1480, vis:814},
+    {t:"Oct 28, 20:00", pv:980, vis:539},
+    // Oct 29: exponential decay with evening bounce
+    {t:"Oct 29, 08:00", pv:180, vis:99},
+    {t:"Oct 29, 20:00", pv:110, vis:60},
+    // Oct 30 - 31: settling down with natural night/day rhythm
+    {t:"Oct 30, 08:00", pv:35, vis:19},
+    {t:"Oct 30, 20:00", pv:52, vis:28},
+    {t:"Oct 31, 08:00", pv:24, vis:13},
+    {t:"Oct 31, 20:00", pv:38, vis:20},
+    // Nov 01: ĐÃ GIẢM ĐỈNH ĐI RÕ RỆT (chỉ bằng ~phân nửa ngày 28)
+    {t:"Nov 1, 08:00", pv:220, vis:121},
+    {t:"Nov 1, 14:00", pv:780, vis:429},
+    {t:"Nov 1, 20:00", pv:540, vis:297},
+    // Nov 02: decay tail
+    {t:"Nov 2, 08:00", pv:180, vis:99},
+    {t:"Nov 2, 20:00", pv:110, vis:60},
+    // Nov 03: small rebound
+    {t:"Nov 3, 08:00", pv:55, vis:30},
+    {t:"Nov 3, 20:00", pv:75, vis:41},
+    // Nov 04 - Nov 10: jagged organic ripples
+    {t:"Nov 4, 08:00", pv:20, vis:11},
+    {t:"Nov 4, 20:00", pv:38, vis:21},
+    {t:"Nov 5, 08:00", pv:16, vis:9},
+    {t:"Nov 5, 20:00", pv:32, vis:18},
+    {t:"Nov 6, 08:00", pv:22, vis:12},
+    {t:"Nov 6, 20:00", pv:44, vis:24},
+    {t:"Nov 7, 08:00", pv:18, vis:10},
+    {t:"Nov 7, 20:00", pv:35, vis:19},
+    {t:"Nov 8, 08:00", pv:25, vis:14},
+    {t:"Nov 8, 20:00", pv:52, vis:29},
+    {t:"Nov 9, 08:00", pv:28, vis:15},
+    {t:"Nov 9, 20:00", pv:58, vis:32},
+    {t:"Nov 10, 08:00", pv:32, vis:18},
+    {t:"Nov 10, 20:00", pv:62, vis:34},
+    // Nov 11: secondary peak
+    {t:"Nov 11, 08:00", pv:45, vis:25},
+    {t:"Nov 11, 18:00", pv:410, vis:225},
+    {t:"Nov 11, 22:00", pv:245, vis:135},
+    // Nov 12
+    {t:"Nov 12, 08:00", pv:38, vis:21},
+    {t:"Nov 12, 12:00", pv:25, vis:14}
+  ],
+  paths: [
+    {name:"/", cnt:"2.28k", n:2280, max:2280},
+    {name:"/tro-choi/nem-con/", cnt:490, n:490, max:2280},
+    {name:"/favicon.ico", cnt:460, n:460, max:2280},
+    {name:"/tro-choi/nem-con", cnt:290, n:290, max:2280},
+    {name:"/nem-con/index.html", cnt:170, n:170, max:2280},
+    {name:"/choi/nem-con/", cnt:130, n:130, max:2280},
+    {name:"/day-gay/index.html", cnt:135, n:135, max:2280},
+    {name:"/index.html", cnt:115, n:115, max:2280},
+    {name:"/tro-choi/day-gay/", cnt:110, n:110, max:2280}
+  ],
+  hosts: [
+    {name:"chamsacviet.online", cnt:"5.82k", n:5820, max:5820},
+    {name:"www.chamsacviet.online", cnt:580, n:580, max:5820},
+    {name:"chamsacviet.online:443", cnt:150, n:150, max:5820},
+    {name:"chamsacviet.online:8443", cnt:105, n:105, max:5820},
+    {name:"www.chamsacviet.online:443", cnt:6, n:6, max:5820}
+  ],
+  deviceSummary: { desktop: "5.8k", mobile: "800" },
+  devMax: 1600,
+  devSteps: [1600, 1200, 800, 400, 0],
+  devXLabels: ["Oct 24","Oct 27","Oct 30","Nov 2","Nov 5","Nov 8","Nov 11","Nov 12"],
+  devSeries: [
+    {t:"Oct 24, 08:00", desk:2, mob:0},
+    {t:"Oct 24, 20:00", desk:3, mob:1},
+    {t:"Oct 25, 08:00", desk:3, mob:0},
+    {t:"Oct 25, 20:00", desk:4, mob:1},
+    {t:"Oct 26, 08:00", desk:4, mob:1},
+    {t:"Oct 26, 20:00", desk:8, mob:1},
+    {t:"Oct 27, 08:00", desk:7, mob:1},
+    {t:"Oct 27, 20:00", desk:12, mob:2},
+    {t:"Oct 28, 08:00", desk:370, mob:50},
+    {t:"Oct 28, 14:00", desk:1310, mob:170},
+    {t:"Oct 28, 20:00", desk:865, mob:115},
+    {t:"Oct 29, 08:00", desk:158, mob:22},
+    {t:"Oct 29, 20:00", desk:96, mob:14},
+    {t:"Oct 30, 08:00", desk:30, mob:5},
+    {t:"Oct 30, 20:00", desk:45, mob:7},
+    {t:"Oct 31, 08:00", desk:21, mob:3},
+    {t:"Oct 31, 20:00", desk:33, mob:5},
+    {t:"Nov 1, 08:00", desk:192, mob:28},
+    {t:"Nov 1, 14:00", desk:685, mob:95},
+    {t:"Nov 1, 20:00", desk:475, mob:65},
+    {t:"Nov 2, 08:00", desk:158, mob:22},
+    {t:"Nov 2, 20:00", desk:96, mob:14},
+    {t:"Nov 3, 08:00", desk:48, mob:7},
+    {t:"Nov 3, 20:00", desk:65, mob:10},
+    {t:"Nov 4, 08:00", desk:17, mob:3},
+    {t:"Nov 4, 20:00", desk:33, mob:5},
+    {t:"Nov 5, 08:00", desk:14, mob:2},
+    {t:"Nov 5, 20:00", desk:28, mob:4},
+    {t:"Nov 6, 08:00", desk:19, mob:3},
+    {t:"Nov 6, 20:00", desk:38, mob:6},
+    {t:"Nov 7, 08:00", desk:15, mob:3},
+    {t:"Nov 7, 20:00", desk:30, mob:5},
+    {t:"Nov 8, 08:00", desk:22, mob:3},
+    {t:"Nov 8, 20:00", desk:45, mob:7},
+    {t:"Nov 9, 08:00", desk:24, mob:4},
+    {t:"Nov 9, 20:00", desk:50, mob:8},
+    {t:"Nov 10, 08:00", desk:28, mob:4},
+    {t:"Nov 10, 20:00", desk:54, mob:8},
+    {t:"Nov 11, 08:00", desk:39, mob:6},
+    {t:"Nov 11, 18:00", desk:360, mob:50},
+    {t:"Nov 11, 22:00", desk:215, mob:30},
+    {t:"Nov 12, 08:00", desk:33, mob:5},
+    {t:"Nov 12, 12:00", desk:22, mob:3}
+  ],
+  os: [
+    {name:"Windows", cnt:"2.87k", n:2870, max:2870},
+    {name:"Unknown/Others", cnt:"1.88k", n:1880, max:2870},
+    {name:"MacOSX", cnt:"1.56k", n:1560, max:2870},
+    {name:"iOS", cnt:490, n:490, max:2870},
+    {name:"Linux", cnt:400, n:400, max:2870},
+    {name:"Android", cnt:280, n:280, max:2870},
+    {name:"ChromeOS", cnt:12, n:12, max:2870}
+  ],
+  browsers: [
+    {name:"Chrome", cnt:"2.89k", n:2890, max:2890},
+    {name:"Unknown/Others", cnt:"1.65k", n:1650, max:2890}
+  ],
+  ua: [
+    {name:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36", cnt:860, n:860, max:860},
+    {name:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36", cnt:845, n:845, max:860}
+  ]
+};
+
+// --- 7-day view ---
+const D7 = {
+  ...DFULL,
+  range: "Nov 5 – Nov 12",
+  pvText: "930", visText: "515",
+  trendPv: "↗ 45.2%", trendVis: "↗ 38.7%",
+  yMax: 1000,
+  ySteps: [1000, 800, 600, 400, 200, 0],
+  xLabels: ["Nov 5","Nov 7","Nov 9","Nov 11","Nov 12"],
+  series: DFULL.series.slice(26),
+  devMax: 1000,
+  devSteps: [1000, 800, 600, 400, 200, 0],
+  devXLabels: ["Nov 5","Nov 7","Nov 9","Nov 11","Nov 12"],
+  devSeries: DFULL.devSeries.slice(26)
+};
+
+let ds = DFULL; // default to full timeline
+
+// ═══════════════════════════════════════
+// TAB SWITCHING
+// ═══════════════════════════════════════
+document.querySelectorAll('#main-tabs .tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('#main-tabs .tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+    const page = document.getElementById('page-' + tab.dataset.tab);
+    if (page) page.classList.add('active');
+  });
+});
+
+// ═══════════════════════════════════════
+// METRIC CARD SELECTION
+// ═══════════════════════════════════════
+let selectedMetric = 'pv';
+function selectMetric(m) {
+  selectedMetric = m;
+  document.getElementById('card-pv').classList.toggle('selected', m === 'pv');
+  document.getElementById('card-vis').classList.toggle('selected', m === 'vis');
+}
+
+// ═══════════════════════════════════════
+// RENDER ALL SECTIONS
+// ═══════════════════════════════════════
+function render() {
+  // 1. Text Summary
+  document.getElementById('date-label').textContent = ds.range;
+  document.getElementById('val-pv').textContent = ds.pvText;
+  document.getElementById('val-vis').textContent = ds.visText;
+  document.getElementById('trend-pv').querySelector('span').textContent = ds.trendPv.replace(/[^\d.%]/g,'');
+  document.getElementById('trend-vis').querySelector('span').textContent = ds.trendVis.replace(/[^\d.%]/g,'');
+  document.getElementById('ct-pv').textContent = ds.pvText;
+  document.getElementById('ct-vis').textContent = ds.visText;
+
+  // 2. Editor fields
+  document.getElementById('cfg-pv').value = ds.pvText;
+  document.getElementById('cfg-vis').value = ds.visText;
+  document.getElementById('cfg-trend').value = ds.trendPv;
+
+  // 3. Top Line Charts & Sparklines
+  drawChart('pv');
+  drawChart('vis');
+  drawSpark('pv');
+  drawSpark('vis');
+
+  // 4. Content Lists
+  renderBarList('bl-paths', ds.paths);
+  renderBarList('bl-hosts', ds.hosts);
+
+  // 5. Technology Section
+  document.getElementById('dev-desk-n').textContent = ds.deviceSummary.desktop;
+  document.getElementById('dev-mob-n').textContent = ds.deviceSummary.mobile;
+  drawDeviceChart();
+  renderBarList('bl-os', ds.os);
+  renderBarList('bl-browsers', ds.browsers);
+  renderBarList('bl-ua', ds.ua);
+}
+
+// ─── Line Charts ───
+function drawChart(key) {
+  const W = 600, H = 220, pL = 45, pR = 15, pT = 25, pB = 40;
+  const pw = W - pL - pR, ph = H - pT - pB;
+  const data = ds.series, max = ds.yMax;
+  const field = key === 'pv' ? 'pv' : 'vis';
+
+  let g = '';
+  ds.ySteps.forEach(s => {
+    const y = pT + (1 - s / max) * ph;
+    g += `<line x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}" stroke="#edf0f4" stroke-width="1"/>`;
+    g += `<text x="${pL-8}" y="${y+3.5}" text-anchor="end" font-size="10" fill="#9ca3af" font-family="sans-serif">${s}</text>`;
+  });
+  ds.xLabels.forEach((l, i) => {
+    const x = pL + (i / (ds.xLabels.length - 1)) * pw;
+    g += `<text x="${x}" y="${H-10}" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="sans-serif">${l}</text>`;
+  });
+  document.getElementById('grid-' + key).innerHTML = g;
+
+  const pts = data.map((d, i) => ({
+    x: pL + (i / (data.length - 1)) * pw,
+    y: pT + (1 - Math.min(d[field], max) / max) * ph,
+    d
+  }));
+
+  let lp = 'M ' + pts.map(p => p.x + ' ' + p.y).join(' L ');
+  document.getElementById('line-' + key).setAttribute('d', lp);
+  document.getElementById('area-' + key).setAttribute('d', lp + ` L ${pts[pts.length-1].x} ${pT+ph} L ${pts[0].x} ${pT+ph} Z`);
+
+  const wrap = document.getElementById('cw-' + key);
+  const xh = document.getElementById('xh-' + key);
+  const dot = document.getElementById('dot-' + key);
+  const tip = document.getElementById('tip-' + key);
+
+  wrap.onmousemove = e => {
+    const r = wrap.getBoundingClientRect();
+    const mx = (e.clientX - r.left) / r.width * W;
+    let near = pts[0], md = 1e9;
+    pts.forEach(p => { const d = Math.abs(p.x - mx); if (d < md) { md = d; near = p; }});
+    xh.setAttribute('x1', near.x); xh.setAttribute('x2', near.x);
+    xh.setAttribute('y1', pT); xh.setAttribute('y2', pT + ph);
+    xh.style.opacity = '1';
+    dot.setAttribute('cx', near.x); dot.setAttribute('cy', near.y); dot.style.opacity = '1';
+    const px = near.x / W * r.width, py = near.y / H * r.height;
+    tip.style.left = px + 'px'; tip.style.top = py + 'px'; tip.style.opacity = '1';
+    tip.innerHTML = '<b>' + near.d.t + '</b><br>' + (field === 'pv' ? 'Pageviews' : 'Visits') + ': ' + near.d[field].toLocaleString();
+  };
+  wrap.onmouseleave = () => { xh.style.opacity = '0'; dot.style.opacity = '0'; tip.style.opacity = '0'; };
+}
+
+// ─── Sparkline ───
+function drawSpark(key) {
+  const W = 130, H = 42;
+  const field = key === 'pv' ? 'pv' : 'vis';
+  const data = ds.series, max = ds.yMax;
+  const pts = data.map((d, i) => ({
+    x: (i / (data.length - 1)) * W,
+    y: 3 + (1 - Math.min(d[field], max) / max) * (H - 6)
+  }));
+  let lp = 'M ' + pts.map(p => p.x.toFixed(1) + ' ' + p.y.toFixed(1)).join(' L ');
+  const suffix = key === 'pv' ? 'pv' : 'vis';
+  document.getElementById('spl-' + suffix).setAttribute('d', lp);
+  document.getElementById('spa-' + suffix).setAttribute('d', lp + ` L ${W} ${H} L 0 ${H} Z`);
+}
+
+// ─── Generic Bar List (Paths, Hosts, OS, Browsers, UA) ───
+function renderBarList(targetId, items) {
+  const container = document.getElementById(targetId);
+  if (!container || !items) return;
+  let html = '';
+  items.forEach(it => {
+    const rawVal = it.n !== undefined ? it.n : (typeof it.cnt === 'number' ? it.cnt : parseFloat(it.cnt) * 1000);
+    const maxVal = it.max || 1;
+    const pct = Math.min(100, Math.max(3, (rawVal / maxVal) * 100));
+    const displayCnt = typeof it.cnt === 'number' ? it.cnt.toLocaleString() : it.cnt;
+
+    html += `
+      <div class="bl-row">
+        <span class="bl-name" title="${it.name}">${it.name}</span>
+        <div class="bl-track">
+          <div class="bl-fill" style="width: ${pct}%"></div>
+        </div>
+        <span class="bl-cnt">${displayCnt}</span>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+// ─── Stacked Bar Chart for Device types ───
+function drawDeviceChart() {
+  const W = 600, H = 220, pL = 45, pR = 15, pT = 20, pB = 40;
+  const pw = W - pL - pR, ph = H - pT - pB;
+  const data = ds.devSeries;
+  const max = ds.devMax;
+
+  // Grid
+  let gridHtml = '';
+  ds.devSteps.forEach(s => {
+    const y = pT + (1 - s / max) * ph;
+    gridHtml += `<line x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}" stroke="#edf0f4" stroke-width="1"/>`;
+    gridHtml += `<text x="${pL-8}" y="${y+3.5}" text-anchor="end" font-size="10" fill="#9ca3af" font-family="sans-serif">${s}</text>`;
+  });
+  ds.devXLabels.forEach((l, i) => {
+    const x = pL + (i / (ds.devXLabels.length - 1)) * pw;
+    gridHtml += `<text x="${x}" y="${H-10}" text-anchor="middle" font-size="10" fill="#9ca3af" font-family="sans-serif">${l}</text>`;
+  });
+  document.getElementById('dev-grid').innerHTML = gridHtml;
+
+  // Stacked Bars
+  const barCount = data.length;
+  const barW = Math.max(8, Math.min(16, (pw / barCount) * 0.55));
+  let barsHtml = '';
+
+  data.forEach((d, i) => {
+    const cx = pL + (i / (barCount - 1)) * pw;
+    const x = cx - barW / 2;
+    const deskH = (d.desk / max) * ph;
+    const mobH = (d.mob / max) * ph;
+
+    const deskY = pT + ph - deskH;
+    const mobY = deskY - mobH;
+
+    // Desktop bar (blue)
+    if (deskH > 0) {
+      barsHtml += `<rect x="${x}" y="${deskY}" width="${barW}" height="${deskH}" fill="#0051c3" rx="1"/>`;
+    }
+    // Mobile bar (orange) stacked on top
+    if (mobH > 0) {
+      barsHtml += `<rect x="${x}" y="${mobY}" width="${barW}" height="${mobH}" fill="#f6821f" rx="1"/>`;
+    }
+  });
+
+  document.getElementById('dev-bars').innerHTML = barsHtml;
+
+  // Device tooltip
+  const wrap = document.getElementById('cw-dev');
+  const tip = document.getElementById('tip-dev');
+  wrap.onmousemove = e => {
+    const r = wrap.getBoundingClientRect();
+    const mx = (e.clientX - r.left) / r.width * W;
+    let near = data[0], md = 1e9, nearIdx = 0;
+    data.forEach((d, i) => {
+      const cx = pL + (i / (barCount - 1)) * pw;
+      const dist = Math.abs(cx - mx);
+      if (dist < md) { md = dist; near = d; nearIdx = i; }
+    });
+    const cx = pL + (nearIdx / (barCount - 1)) * pw;
+    const px = cx / W * r.width;
+    tip.style.left = px + 'px';
+    tip.style.top = '40px';
+    tip.style.opacity = '1';
+    tip.innerHTML = `<b>${near.t}</b><br><span style="color:#60a5fa">Desktop:</span> ${near.desk}<br><span style="color:#fb923c">Mobile:</span> ${near.mob}`;
+  };
+  wrap.onmouseleave = () => { tip.style.opacity = '0'; };
+}
+
+// ═══════════════════════════════════════
+// DATE RANGE PICKER
+// ═══════════════════════════════════════
+function toggleDateMenu() {
+  document.getElementById('date-menu').classList.toggle('show');
+}
+window.addEventListener('click', e => {
+  if (!e.target.closest('.date-wrap')) document.getElementById('date-menu').classList.remove('show');
+});
+function pickRange(r, el) {
+  document.querySelectorAll('.dm-item').forEach(i => i.classList.remove('sel'));
+  el.classList.add('sel');
+  ds = r === '24h' ? D24 : r === 'full' ? DFULL : D7;
+  document.getElementById('date-menu').classList.remove('show');
+  render();
+}
+
+// ═══════════════════════════════════════
+// PRESETS & EDITOR
+// ═══════════════════════════════════════
+function applyPreset(p) {
+  ds = p === 'photo' ? D24 : DFULL;
+  document.querySelectorAll('.dm-item').forEach(i => i.classList.remove('sel'));
+  const targetIdx = p === 'photo' ? 0 : 1;
+  const items = document.querySelectorAll('.dm-item');
+  if (items[targetIdx]) items[targetIdx].classList.add('sel');
+  render();
+}
+function toggleEd() {
+  document.getElementById('ed-modal').classList.toggle('open');
+}
+function overrideText() {
+  ds.pvText = document.getElementById('cfg-pv').value;
+  ds.visText = document.getElementById('cfg-vis').value;
+  ds.trendPv = document.getElementById('cfg-trend').value;
+  ds.trendVis = document.getElementById('cfg-trend').value;
+  render();
+}
+function toggleStealth(on) {
+  document.getElementById('ed-btn').classList.toggle('hidden', on);
+  if (on) document.getElementById('ed-modal').classList.remove('open');
+}
+window.addEventListener('keydown', e => {
+  if ((e.key === 'h' || e.key === 'H') && !['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)) {
+    const btn = document.getElementById('ed-btn');
+    if (btn.classList.contains('hidden')) {
+      btn.classList.remove('hidden');
+    } else {
+      toggleEd();
+    }
+  }
+});
+
+// Initial render
+render();
+
+</script>
+</body>
+</html>
